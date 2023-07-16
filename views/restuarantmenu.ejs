@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <script src="/propper/popper.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>
+        <%= title %>
+    </title>
+    <style>
+        body {
+            background-color: #e3c6e6;
+            overflow-x: hidden;
+        }
+
+        .one {
+            padding-left: 1400px;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include navbar %>
+        <div class="mb-5" style="margin-top: 2%; padding-left: 2%;">
+            <h1>
+                <%= storeName %>
+            </h1>
+        </div>
+        <% if(menuList.length> 0) { %>
+            <% for(let i=0; i<menuList.length; i++) { %>
+                <div class="card mb-3" style="border-radius: 20px; margin-left: 2%; margin-right: 2%;">
+                    <div class="card-body row">
+                        <div class="col-5">
+                            <img src="<%= menuList[i]['image'] %>" class="card-img-top">
+                        </div>
+                        <div class="col-7" style="margin-top: 2%; padding-left: 5%;">
+                            <label for="inputEmail3" class=" col-form-label"
+                                style="font-size: 30px; font-weight:bold;">ชื่ออาหาร</label>
+                            <p style="font-size: 25px;">
+                                <%= menuList[i]['name'] %>
+                            </p>
+                            <br>
+                            <label for="inputEmail3" class=" col-form-label"
+                                style="font-size: 30px; font-weight:bold;">คำอธิบาย</label>
+                            <p style="font-size: 25px;">
+                                <%= menuList[i]['description'] %>
+                            </p>
+                            <br>
+                            <label for="inputEmail3" class=" col-form-label"
+                                style="font-size: 30px; font-weight:bold;">ราคา</label>
+                            <p style="font-size: 25px;">
+                                <%= menuList[i]['price'] %> ฿
+                            </p>
+                            <br>
+                            <!-- <label for="inputEmail3" class=" col-form-label"
+                                style="font-size: 30px; font-weight:bold;">ประเภท</label>
+                            <% for(let j=0; j<menuTypeList.length; j++) { %>
+                                <% if(menuTypeList[j]['menu_TypeID']==menuList[i]['menu_TypeID']){ %>
+                                    <p style="font-size: 25px;">
+                                        <%= menuTypeList[j]['type_Name'] %>
+                                    </p>
+                                    <% } %>
+                                        <% } %> -->
+
+
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+                    <% }else{ %>
+                        <div class="text-center mt-4">
+                            <h1 style="color: gray;">ยังไม่มีเมนูอาหาร</h1>
+                        </div>
+                        <% } %>
+
+</body>
+
+</html>

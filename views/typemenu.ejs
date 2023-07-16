@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <script src="/propper/popper.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title><%= title %></title>
+    <style>
+        body {
+            background-color: #e3c6e6;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 30px;
+            background-color: white;
+            border-radius: 20px;
+        }
+
+        thead {
+            background-color: #BF72B4;
+        }
+
+        th,
+        td {
+            text-align: center;
+            font-size: 20px;
+        }
+
+        /* tr:nth-child(even) {
+            background-color: #BF72B4;
+        } */
+
+        th {
+            font-size: 20px;
+        }
+
+        .delete {
+            background-color: red;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            padding: 3% 8%;
+        }
+
+        #myBtn {
+            background-color: #621685;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            padding: 1% 1%;
+        }
+    </style>
+</head>
+
+<body>
+    <% include navbarRestuarant %>
+    <div class="text-center" style="margin-top: 2%;">
+        <h1>ประเภทอาหาร</h1>
+    </div>
+
+    <% if(menuTypeList.length > 0) { %>
+    <div class="contanier" style="width: 800px; margin: auto; ">
+        <table class="table" style="margin-top: 30px; ">
+            <thead>
+                <tr>
+                    <th scope="col">ชื่อประเภทอาหาร</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <% for(let i=0; i<menuTypeList.length; i++) { %>
+                    <tr>
+                        <td><%= menuTypeList[i]['type_Name'] %></td>
+                    <td>
+                        <form action="/restuarants/deleteMenuType/<%= menuTypeList[i]['menu_TypeID'] %>" id="formDelete<%= i %>" method="post">
+                            <button type="button" class="delete" id="deleteButt" onclick="confirmDelete('<%= i %>')">ลบ</button>
+                        </form>
+                    </td>
+                    </tr>
+                <% } %>
+                <!-- <tr>
+                    <td>อาหารไทย</td>
+                    <td>
+                        <button type="button" class="delete" id="deleteButt">ลบ</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>อาหารไทย</td>
+                    <td>
+                        <button type="button" class="delete" id="deleteButt">ลบ</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>อาหารไทย</td>
+                    <td>
+                        <button type="button" class="delete" id="deleteButt">ลบ</button>
+                    </td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+    <% } else{ %>
+        <div class="text-center mt-4">
+            <h1 style="color: gray;">ยังไม่มีประเภทเมนูอาหาร</h1>
+        </div>
+    <% } %>
+    <!-- Trigger/Open The Modal -->
+    <div class="text-center">
+        <button id="myBtn">เพิ่มประเภทอาหาร</button>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal" style="margin-top: 10%; width: 700px; height:500px; margin-left: 27%;">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+               <h4 class="modal-title">ประเภทอาหาร</h4>
+               <span style="font-size: 30px; font-weight: bold;" id="close">x</span>
+            </div>
+            <form action="/restuarants/addMenuType" method="post">
+                <div class="modal-body">
+                    <div class="input-group">
+                        <input type="text" id="keyword" name="typeName" class="form-control" placeholder="ประเภทอาหาร">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default" data-dismiss="modal">Add</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    
+
+    <script>
+        function confirmDelete(num){
+            if(window.confirm("Are you sure to delete?")){
+                document.getElementById("formDelete"+num).submit();
+            } else {
+                return;
+            }
+        }
+            
+        // Get the modal
+        const modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        const btn = document.getElementById("myBtn");
+        const span = document.getElementById("close");
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+</html>

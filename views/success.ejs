@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success</title>
+    <style>
+        body {
+            background-color: #e3c6e6;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        let msg = '<%- success %>';
+        let path = '<%- path %>';
+        if (path.indexOf(" ") >= 0) {
+            let pathTemp = path.split(" ");
+            path = pathTemp[0]+'/'+pathTemp[1]
+        }
+        if (msg != '') {
+            if (!alert(msg)) { window.location.href = "/"+path }
+        }
+    </script>
+</body>
+
+</html>

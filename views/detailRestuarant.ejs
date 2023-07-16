@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script src="/propper/popper.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>
+        <%= title %>
+    </title>
+    <style>
+        body {
+            background-color: #e3c6e6;
+            overflow-x: hidden;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        #myBtn {
+            background-color: #621685;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            padding: 1% 1%;
+            margin-bottom: 2%;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include navbarRestuarant %>
+        <div class="mb-5" style="margin-top: 2%; padding-left: 2%;">
+            <h1>
+                <%= storeName %>
+            </h1>
+        </div>
+
+        <div class="text-center">
+            <button id="myBtn">เพิ่มเมนูอาหาร</button>
+        </div>
+
+        <div id="myModal" class="modal" style="margin-top: 5%; width: 700px; height:500px; margin-left: 25%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">เพิ่มเมนูอาหาร</h4>
+                    <span style="font-size: 30px; font-weight: bold;" id="close">x</span>
+                </div>
+                <form action="/restuarants/addMenu" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <label for="menuName" class=" col-form-label"
+                            style="font-size: 20px; font-weight:bold;">ชื่ออาหาร</label>
+                        <input type="text" class="foodname mb-3" name="menuName" id="menuName" style="width: 450px;"
+                            required>
+                        <br>
+                        <label for="description" class=" col-form-label"
+                            style="font-size: 20px; font-weight:bold;">คำอธิบาย</label>
+                        <input type="text" class="detailfoodname mb-3" name="description" id="description"
+                            style="width: 450px;">
+                        <br>
+                        <label for="price" class=" col-form-label"
+                            style="font-size: 20px; font-weight:bold;">ราคา</label>
+                        <input type="number" class="price mb-3" name="price" id="price" style="width: 100px;" required>
+                        <!-- <label for="inputEmail3" class=" col-form-label"
+                            style="font-size: 20px; font-weight:bold;">จำนวน</label>
+                        <input type="number" class="price mb-3" id="pricefood " style="width: 100px;"> -->
+                        <br>
+                        <label for="typeFood" style="font-size: 20px; font-weight:bold;">ประเภทอาหาร</label>
+                        <select name="typeFood" id="typeFood" required>
+                            <option value="" selected>เลือกประเภทอาหาร</option>
+                            <% for(let j=0; j<menuTypeList.length; j++) { %>
+                                <option value="<%= menuTypeList[j]['menu_TypeID'] %>">
+                                    <%= menuTypeList[j]['type_Name'] %>
+                                </option>
+                                <% } %>
+                        </select>
+                        <br><br>
+                        <label for="menuImg" class=" col-form-label"
+                            style="font-size: 20px; font-weight:bold;">อัพโหลดรูปภาพอาหาร</label>
+                        <input type="file" name="menuImg" id="menuImg" placeholder="อัปโหลดรูปภาพ" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default" data-dismiss="modal">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <% if(menuList.length> 0) { %>
+            <% for(let i=0; i<menuList.length; i++) { %>
+                <div class="card mb-3" style="border-radius: 20px; margin-left: 2%; margin-right: 2%;">
+                    <form action="" method="post" id="formDeleteMenu">
+                        <div class="card-body row">
+                            <div class="col-5">
+                                <img src="<%= menuList[i]['image'] %>" class="card-img-top">
+                            </div>
+                            <div class="col-7" style="margin-top: 2%; padding-left: 5%;">
+                                <label for="menuname" class=" col-form-label"
+                                    style="font-size: 20px; font-weight:bold;">ชื่ออาหาร</label>
+                                <input type="text" class="foodname mb-3" name="menuName" id="menuname"
+                                    style="width: 450px;" value="<%= menuList[i]['name'] %>" required>
+                                <br>
+                                <label for="detailmenuname" class=" col-form-label"
+                                    style="font-size: 20px; font-weight:bold;">คำอธิบาย</label>
+                                <input type="text" class="detailfoodname mb-3" name="description" id="detailmenuname"
+                                    style="width: 450px;" value="<%= menuList[i]['description'] %>" required>
+                                <br>
+                                <label for="pricefood" class=" col-form-label"
+                                    style="font-size: 20px; font-weight:bold;">ราคา(บาท)</label>
+                                <input type="number" class="price mb-3" name="price" id="pricefood"
+                                    style="width: 100px;" value="<%= menuList[i]['price'] %>" required>
+                                <!-- <label for="inputEmail3" class=" col-form-label"
+                                style="font-size: 20px; font-weight:bold;">จำนวน</label>
+                            <input type="number" class="price mb-3" id="pricefood " style="width: 100px;"> -->
+                                <br>
+                                <label for="foods" style="font-size: 20px; font-weight:bold;">ประเภท</label>
+                                <select name="typeFood" id="foods" required>
+                                    <% for(let j=0; j<menuTypeList.length; j++) { %>
+                                        <% if(menuTypeList[j]['menu_TypeID']==menuList[i]['menu_TypeID']){ %>
+                                            <option value="<%= menuTypeList[j]['menu_TypeID'] %>" selected>
+                                                <%= menuTypeList[j]['type_Name'] %>
+                                            </option>
+                                            <% } else{ %>
+                                                <option value="<%= menuTypeList[j]['menu_TypeID'] %>">
+                                                    <%= menuTypeList[j]['type_Name'] %>
+                                                </option>
+                                                <% } %>
+                                                    <% } %>
+                                </select>
+                                <br><br>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <p style="font-size: 20px; font-weight:bold;">เปิด/ปิดการมองเห็นของอาหาร</p>
+                                    </div>
+                                    <div class="col-7">
+                                        <label class="switch">
+                                            <% if(menuList[i]['status']==1) {%>
+                                                <input name="status" type="checkbox" checked>
+                                                <% } else { %>
+                                                    <input name="status" type="checkbox">
+                                                    <% } %>
+                                                        <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <br>
+                                <label for="menuImg" class=" col-form-label"
+                                    style="font-size: 20px; font-weight:bold;">อัพโหลดรูปภาพอาหาร</label>
+                                <input type="file" name="menuImg"></input>
+                                <br><br>
+                                <button type="submit" class="save"
+                                    formaction="/restuarants/editMenu/<%= menuList[i]['id'] %>"
+                                    style="background-color: green; color: white; border-radius: 2px;border: none; width: 130px; height: 40px; border-radius: 20px;">บันทึกการแก้ไข</button>
+                                    <button type="button" class="upload" onclick="confirmDelete('<%= menuList[i].id %>')"
+                                        style="background-color: red; color: white; border-radius: 2px;border: none; width: 100px; height: 40px; border-radius: 20px;">ลบ</button>
+                                <br><br>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <% } %>
+                    <% }else{ %>
+                        <div class="text-center mt-4">
+                            <h1 style="color: gray;">ยังไม่มีเมนูอาหาร</h1>
+                        </div>
+                        <% } %>
+
+                            <script>
+                                function confirmDelete(id) {
+                                    if (window.confirm("Are you sure to delete?")) {
+                                        document.getElementById("formDeleteMenu").action = "/restuarants/deleteMenu/"+id
+                                        document.getElementById("formDeleteMenu").submit();
+                                    } else {
+                                        return;
+                                    }
+                                }
+                                const modal = document.getElementById("myModal");
+                                const btn = document.getElementById("myBtn");
+                                const span = document.getElementById("close");
+
+                                btn.onclick = function () {
+                                    modal.style.display = "block";
+                                }
+
+                                // When the user clicks on <span> (x), close the modal
+                                span.onclick = function () {
+                                    modal.style.display = "none";
+                                }
+
+                                // When the user clicks anywhere outside of the modal, close it
+                                window.onclick = function (event) {
+                                    if (event.target == modal) {
+                                        modal.style.display = "none";
+                                    }
+                                }
+                            </script>
+</body>
+
+</html>

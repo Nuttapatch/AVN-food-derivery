@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <script src="/propper/popper.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>
+        <%= title %>
+    </title>
+    <style>
+        body {
+            background-color: #e3c6e6;
+        }
+
+        .detail {
+            background-color: #621685;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            font-size: 18px;
+            width: 150px;
+            height: 80px;
+        }
+
+        .card {
+            /* ขนาด card */
+            width: 95%;
+        }
+
+        .ordersButt {
+            background-color: #e3c6e6;
+            border: none;
+            font-size: 20px;
+            padding: 3%;
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+    <% include navbarRestuarant %>
+        <div class="container-fluid">
+            <div class="row" style="margin-top: 2%;">
+                <div class="col-2 text-end">
+                    <button class="ordersButt" id="incomingButt">ออเดอร์ที่ดำเนินการอยู่</button>
+                </div>
+                <div class="col-2 text-center">
+                    <button class="ordersButt" id="successButt">ออเดอร์ที่สำเร็จ</button>
+                </div>
+                <div class="col-2 text-start">
+                    <button class="ordersButt" id="cancelButt">ออเดอร์ที่ถูกยกเลิก</button>
+                </div>
+            </div>
+
+            <!-- ออเดอร์ที่ต้องดำเนินการ -->
+            <div class="row" id="incomingOrders">
+                <div class="text-start" style="padding-top: 2%; padding-left: 3%;">
+                    <h2>ออเดอร์ที่ดำเนินการอยู่</h2>
+                </div>
+
+                <% if(Order.length> 0) { %>
+                    <% for(let i=0; i < Order.length; i++) { %>
+                        <div class="card" style="border-radius: 20px; margin: auto; margin-top: 2%;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col-1 text-end" id="orders" style="width: 100px;">
+                                                <img src="/images/orders.jpg" style="width: 30px;height: 40px;">
+                                            </div>
+                                            <div class="col-3" id="orderID">
+                                                <h4>Order ID:</h4>
+                                            </div>
+                                            <div class="col-3" id="Order">
+                                                <p style="font-size: 25px; padding-bottom: 1%;">
+                                                    <%= Order[i]['id'] %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-1 text-end" id="orders" style="width: 100px;">
+                                                <img src="/images/iconperson.png" style="width: 30px;height: 40px;">
+                                            </div>
+                                            <div class="col-3" id="orderID">
+                                                <h4 style="font-size: 25px; padding-top: 3%;">รายการสั่งซื้อ:</h4>
+                                            </div>
+                                            <div class="col-6" id="Order">
+                                                <p style="font-size: 25px; padding-bottom: 2%;">
+                                                    <%= AmountShow[i]%> รายการสำหรับ <%= UserShow[i]%>
+                                                </p>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3 text-end" id="orderID" style="margin-left: 4%;">
+                                                    <h4 style="font-size: 22px; padding-top: 3%;">สถานะออเดอร์:</h4>
+                                                </div>
+                                                <div class="col-6 text-start" id="Order">
+                                                    <% if(Order[i].status==0) { %>
+                                                        <p style="font-size: 22px; padding-bottom: 2%; color: gray;">
+                                                            รอไรเดอร์กดรับออเดอร์</p>
+                                                        <% }else if(Order[i].status==1) { %>
+                                                            <p
+                                                                style="font-size: 22px; padding-bottom: 2%; color: orange;">
+                                                                ออเดอร์รอดำเนินการ</p>
+                                                            <% }else if(Order[i].status==2) { %>
+                                                                <p
+                                                                    style="font-size: 22px; padding-bottom: 2%; color: mediumslateblue;">
+                                                                    ไรเดอร์กำลังไปส่งออเดอร์</p>
+                                                                <% } %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col text-end" style="padding-right: 5%; padding-top: 5%;">
+                                                <button type="button" class="detail" id="detailButt"
+                                                    onclick="detail('<%= Order[i].id %>')">รายละเอียด</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                            <% } else{ %>
+                                <div class="text-center" style="margin-top: 5%;">
+                                    <h2 style="color: gray;">ยังไม่มีออเดอร์ที่ดำเนินการอยู่</h2>
+                                </div>
+                                <% } %>
+            </div>
+
+            <!-- ออเดอร์ที่สำเร็จ -->
+            <div class="row" id="successOrders">
+                <div class="text-start" style="padding-top: 2%; padding-left: 3%;">
+                    <h2 style="color: green;">ออเดอร์ที่สำเร็จ</h2>
+                </div>
+
+                <% if(OrdersSuccesshow.length> 0) { %>
+                    <% for(let i=0; i < OrdersSuccesshow.length; i++) { %>
+                        <div class="card" style="border-radius: 20px; margin: auto; margin-top: 2%;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col-1 text-end" id="orders" style="width: 100px;">
+                                                <img src="/images/orders.jpg" style="width: 30px;height: 40px;">
+                                            </div>
+                                            <div class="col-3" id="orderID">
+                                                <h4>Order ID:</h4>
+                                            </div>
+                                            <div class="col-3" id="Order">
+                                                <p style="font-size: 25px; padding-bottom: 1%;">
+                                                    <%= OrdersSuccesshow[i]['id'] %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-1 text-end" id="orders" style="width: 100px;">
+                                                <img src="/images/iconperson.png" style="width: 30px;height: 40px;">
+                                            </div>
+                                            <div class="col-3" id="orderID">
+                                                <h4 style="font-size: 25px; padding-top: 3%;">รายการสั่งซื้อ:</h4>
+                                            </div>
+                                            <div class="col-6" id="Order">
+                                                <p style="font-size: 25px; padding-bottom: 2%;">
+                                                    <%= AmountShowSuccess[i]%> รายการสำหรับ <%= UserShowSuccess[i]%>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col text-end" style="padding-right: 5%; padding-top: 2.5%;">
+                                                <button type="button" class="detail" id="detailButt"
+                                                    onclick="detail('<%= OrdersSuccesshow[i].id %>')">รายละเอียด</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                            <% } else{ %>
+                                <div class="text-center" style="margin-top: 5%;">
+                                    <h2 style="color: gray;">ยังไม่มีออเดอร์ที่สำเร็จ</h2>
+                                </div>
+                                <% } %>
+            </div>
+
+            <!-- ออเดอร์ที่ถูกยกเลิก -->
+            <div class="row" id="cancelOrders">
+                <div class="text-start" style="padding-top: 2%; padding-left: 3%;">
+                    <h2 style="color: red;">ออเดอร์ที่ถูกยกเลิก</h2>
+                </div>
+
+                <% if(OrderCancelshow.length> 0) { %>
+                    <% for(let i=0; i < OrderCancelshow.length; i++) { %>
+                        <div class="card" style="border-radius: 20px; margin: auto; margin-top: 2%;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col-1 text-end" id="orders" style="width: 100px;">
+                                                <img src="/images/orders.jpg" style="width: 30px;height: 40px;">
+                                            </div>
+                                            <div class="col-3" id="orderID">
+                                                <h4>Order ID:</h4>
+                                            </div>
+                                            <div class="col-3" id="Order">
+                                                <p style="font-size: 25px; padding-bottom: 1%;">
+                                                    <%= OrderCancelshow[i]['id'] %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-1 text-end" id="orders" style="width: 100px;">
+                                                <img src="/images/iconperson.png" style="width: 30px;height: 40px;">
+                                            </div>
+                                            <div class="col-3" id="orderID">
+                                                <h4 style="font-size: 25px; padding-top: 3%;">รายการสั่งซื้อ:</h4>
+                                            </div>
+                                            <div class="col-6" id="Order">
+                                                <p style="font-size: 25px; padding-bottom: 2%;">
+                                                    <%= AmountShowCancel[i]%> รายการสำหรับ <%= UserShowCancel[i]%>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col text-end" style="padding-right: 5%; padding-top: 2.5%;">
+                                                <button type="button" class="detail" id="detailButt"
+                                                    onclick="detail('<%= OrderCancelshow[i].id %>')">รายละเอียด</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                            <% } else{ %>
+                                <div class="text-center" style="margin-top: 5%;">
+                                    <h2 style="color: gray;">ยังไม่มีออเดอร์ที่ถูกยกเลิก</h2>
+                                </div>
+                                <% } %>
+            </div>
+        </div>
+</body>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script>
+    $(() => {
+        $("#incomingButt").css({ "border-bottom": "3px purple solid", "color": "black" })
+
+        $('#successOrders').css("display", "none")
+        $('#cancelOrders').css("display", "none")
+
+        //ถ้าออเดอร์ของร้านนี้มีการเปลี่ยนแปลง
+        // const ws = new WebSocket("wss://avn-websocket-order.onrender.com");
+
+        // ws.addEventListener('message', function (event) {
+        //     const message = JSON.parse(event.data);
+        //     if (message['storeID'] == '<%= storeID %>') {
+        //         location.href = '/restuarants';                
+        //     }
+        // });
+
+        firebase.initializeApp({
+            apiKey: "AIzaSyDH6BAciN_zTbcFKGk_3wXMghREeaZVcKQ",
+            authDomain: "avnmetaverse.firebaseapp.com",
+            projectId: "avnmetaverse",
+            storageBucket: "avnmetaverse.appspot.com",
+            messagingSenderId: "170904826922",
+            appId: "1:170904826922:web:688f14dc453cb5ea3dbf53",
+            measurementId: "G-XSWPGX1LSR"
+        });
+        let db = firebase.firestore();
+        db.collection("Orders")
+            .onSnapshot((snapshot) => {
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === "added") {
+                        if (change.doc.data()["storeID"] == '<%= storeID %>') {
+                            location.href = '/restuarants';  
+                        }
+                    }
+                    if (change.type === "modified") {
+                        if (change.doc.data()["storeID"] == '<%= storeID %>') {
+                            location.href = '/restuarants';  
+                        }
+                    }
+                });
+            });
+    })
+
+    $("#incomingButt").on('click', () => {
+        $("#incomingButt").css({ "border-bottom": "3px purple solid", "color": "black" })
+        $("#successButt").css({ "border-bottom": "none", "color": "gray" })
+        $("#cancelButt").css({ "border-bottom": "none", "color": "gray" })
+
+        $('#incomingOrders').css("display", "block")
+        $('#successOrders').css("display", "none")
+        $('#cancelOrders').css("display", "none")
+    })
+
+    $("#successButt").on('click', () => {
+        $("#incomingButt").css({ "border-bottom": "none", "color": "gray" })
+        $("#successButt").css({ "border-bottom": "3px purple solid", "color": "black" })
+        $("#cancelButt").css({ "border-bottom": "none", "color": "gray" })
+
+        $('#incomingOrders').css("display", "none")
+        $('#successOrders').css("display", "block")
+        $('#cancelOrders').css("display", "none")
+    })
+
+    $("#cancelButt").on('click', () => {
+        $("#incomingButt").css({ "border-bottom": "none", "color": "gray" })
+        $("#successButt").css({ "border-bottom": "none", "color": "gray" })
+        $("#cancelButt").css({ "border-bottom": "3px purple solid", "color": "black" })
+
+        $('#incomingOrders').css("display", "none")
+        $('#successOrders').css("display", "none")
+        $('#cancelOrders').css("display", "block")
+    })
+
+    function detail(orderID) {
+        location.href = '/restuarants/orderDetail/' + orderID
+    }
+
+</script>
+
+</html>

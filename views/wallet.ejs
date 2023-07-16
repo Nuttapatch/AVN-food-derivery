@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <script src="/propper/popper.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/@coreui/icons@2.0.0-beta.3/css/all.min.css">
+    <title>
+        <%= title %>
+    </title>
+    <style>
+        body {
+            background-color: #e3c6e6;
+        }
+
+        .dropbtn {
+            background-color: white;
+            color: black;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #BEBEBE;
+        }
+
+        .card {
+            /* ขนาด card */
+            width: 50%;
+        }
+
+        #detail {
+            background-color: #621685;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            width: 200px;
+            height: 50px;
+        }
+
+        #detail1 {
+            background-color: #621685;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            width: 200px;
+            height: 50px;
+        }
+
+        .circle {
+            border-radius: 50%;
+        }
+
+        td {
+            border-bottom: 1px solid #696969;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 30px;
+            background-color: white;
+            border-radius: 20px;
+        }
+
+        thead {
+            background-color: #BF72B4;
+        }
+    </style>
+</head>
+
+<body>
+    <% include navbarRestuarant %>
+        <div class="text-center" style="margin-top: 2%;">
+            <h1>Wallet</h1>
+        </div>
+        <div class="card mb-3" style="border-radius: 20px;  margin: auto; margin-top: 2%; ">
+            <div class="card-body row">
+                <div class="text-center" id="wallet" style="padding-left: 2%;">
+                    <h4>ยอดเงินคงเหลือในวอลเล็ท</h4>
+                </div>
+            </div>
+            <div class="card-body row">
+                <div class="text-center" style="padding-left: 2%;">
+                    <p style="font-size: 25px;">
+                        <%= wallet.balance %> ฿
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Trigger/Open The Modal -->
+        <div class="text-center">
+            <button class="btn" id="btn" style="width: 500px; height: 30px;"><i class="cil-bank"
+                    style="font-size: 50px;"></i>
+                <p>โอนเงินไปยังธนาคาร</p>
+            </button>
+        </div>
+        <!-- ตารางเงินเข้าออก -->
+        <div class="contanier " style="width: 500px; margin:auto; margin-top: 10%; ">
+            <table class="table" style="margin-top: 30px; ">
+                <thead>
+                    <tr>
+                        <th scope="col">ประวัติการทำรายการ</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if(transaction.length> 0) { %>
+                        <% for(let i=0; i < transaction.length; i++) { %>
+                            <tr>
+                                <% if(transaction[i]['trans_Name']=='เงินออก' ) { %>
+                                    <td style="font-size: 20px; color: red;"> - <%= transaction[i]['amount'] %> ฿ </td>
+                                    <td style="font-size: 20px; color: black;">
+                                        <%= transaction[i]['trans_Name'] %>
+                                    </td>
+                                    <% } else{ %>
+                                        <td style="font-size: 20px; color: green;"> + <%= transaction[i]['amount'] %> ฿
+                                        </td>
+                                        <td style="font-size: 20px; color: black;">
+                                            <%= transaction[i]['trans_Name'] %>
+                                        </td>
+                                        <% } %>
+                            </tr>
+                            <% } %>
+                                <% } %>
+                </tbody>
+            </table>
+        </div>
+        <!-- The Modal -->
+        <div id="myModal" class="modal" style="margin-top: 10%; width: 700px; height:500px; margin-left: 27%;">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">ยอดเงินในเวอลเล็ท</h4>
+                    <h4 class="modal-title">฿ <%= wallet.balance %>
+                    </h4>
+                    <span style="font-size: 30px; font-weight: bold;" id="close">x</span>
+                </div>
+               
+                    <div class="modal-body">
+                        <div class="input-group mb-4">
+                            <div class="dropdown">
+                                <!-- <label for="banks" style="font-size: 20px; font-weight:bold;">ธนาคารปลายทาง</label> -->
+                                <select style="width: 500px;background-color: #DCDCDC; height: 35px;  " name="typebank"
+                                    id="banks" required>
+                                    <option value="" selected> ธนาคารปลายทาง</option>
+                                    <option value="ธนาคารไทยพาณิชย์">ธนาคารไทยพาณิชย์</option>
+                                    <option value="ธนาคารกสิกรไทย">ธนาคารกสิกรไทย </option>
+                                    <option value="ธนาคารกรุงไทย">ธนาคารกรุงไทย </option>
+                                    
+
+                            </div>
+                          
+                        </div>
+                        <div class="input-group">
+                            <input style="margin-top: 5%;" type="number" id="banknumber" name="number" class="form-control"
+                                placeholder="เลขที่บัญชี" required>
+                        </div>
+                     
+                        <div class="input-group" style="width: 500px;">
+                            <input style="margin-top: 5%;" type="number" id="amount" name="number1" class="form-control"
+                                placeholder="จำนวนเงิน" required>
+                        </div>
+                       
+                    </div>
+                    <div class="modal-footer">
+                        <button id="detail" type="button" class="btn btn-default"
+                            data-dismiss="modal" onclick="myFunction()">โอนเงินเข้าบัญชีธนาคาร</button>
+                    </div>
+            </div>
+           
+        </div>
+        </div>
+
+        <div id="myModal1" class="modal" style="margin-top: 10%; width: 700px; height:500px; margin-left: 27%;">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i  id="back" class="fa fa-arrow-circle-left" style="font-size: 50px;" ></i>
+                    <span style="font-size: 30px; font-weight: bold; " id="close1">x</span>
+                </div>
+                <form action="/restuarants/withdrawn" method="post">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-3 text-end">
+                                <img id="bankimage" src="" width="100" height="100">
+                            </div>
+                            <div class="col-4">
+                                <div class="row">
+                                    <p name="typeName" style="font-size: 20px;">โอนเงินเข้าบัญชีธนาคาร</p>
+                                    <input class="col" name="AmountShow" id="amountshow" style="font-size: 40px; margin-top: 2%;" readonly/>
+                                    <h3 class="col" style="font-size: 60px;">฿</h3>
+                                </div>
+                            </div>
+                            <div class="col-3"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-3">
+                                <h4 style="font-size: 20px; margin-top: 4%; ">ธนาคาร</h4>
+                            </div>
+                            <div class="col-5">
+                                <h4 id="bankshow"style="font-size: 20px; margin-top: 4%; "></h4>
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-3">
+                                <h4 style="font-size: 20px; margin-top: 4%; ">เลขที่บัญชี</h4>
+                            </div>
+                            <div class="col-5">
+                                <h4 id="banknumbershow"style="font-size: 20px; margin-top: 4%; "></h4>
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+                       
+                        <div class="modal-footer">
+                            <button id="detail1" type="submit" class="btn btn-default"
+                                data-dismiss="modal">ยืนยันการโอนเงิน </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- <div id="myModal2" class="modal" style="margin-top: 10%; width: 700px; height:500px; margin-left: 27%;">
+          
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i id="back1" class="fa fa-arrow-circle-left"  style="font-size: 50px;"></i>
+                    <span style="font-size: 30px; font-weight: bold; " id="close2">x</span>
+                </div>
+                <form action="" method="post">
+                    <div class="modal-body text-center">
+                        <img src="/images/iconture.jpg" width="100" height="100">
+                        <h4 style="font-size: 20px; margin-top: 4%; ">โอนเงินสำเร็จ</h4>
+                    </div>
+                </form>
+            </div>
+        </div> -->
+</body>
+
+<script>
+
+    const modal = document.getElementById("myModal");
+    const btn = document.getElementById("btn");
+    const span = document.getElementById("close");
+    const modal1 = document.getElementById("myModal1");
+    const btn1 = document.getElementById("detail");
+    const span1 = document.getElementById("close1");
+    // const modal2 = document.getElementById("myModal2");
+    // const btn2 = document.getElementById("detail1");
+    // const span2 = document.getElementById("close2");
+
+
+    btn.onclick = function () {
+        modal.style.display = "block";
+        modal1.style.display = "none";
+     
+
+    }
+
+
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    //คลิกที่ว่างๆเพื่อปิด
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            modal1.style.display = "none";
+            
+        }
+    }
+
+
+    const walletFunction =  ()=> {
+       
+        modal.style.display = "none";
+        modal1.style.display = "block";
+       
+        const banknumber = document.getElementById("banknumber");
+        const amount= document.getElementById("amount");
+        const banknumbershow = document.getElementById("banknumbershow");
+        const amountshow = document.getElementById("amountshow");
+        banknumbershow.innerHTML = banknumber.value ;
+        amountshow.value = amount.value  ;
+        const banks = document.getElementById("banks");
+        const bankshow = document.getElementById("bankshow");
+        bankshow.innerHTML = banks.value;
+        const bankimage = document.getElementById("bankimage");
+
+        if(banks.value == "ธนาคารไทยพาณิชย์"){
+            bankimage.src ="/images/scb.png"
+        }else if(banks.value == "ธนาคารกสิกรไทย"){
+            bankimage.src ="/images/kplus.jpg"
+        }else if(banks.value == "ธนาคารกรุงไทย"){
+            bankimage.src ="/images/krungthai.png"
+        }
+
+    }
+
+    span1.onclick = function () {
+        modal1.style.display = "none";
+    }
+
+   
+
+ 
+    back.onclick = function (){
+        modal.style.display = "block";
+        modal1.style.display = "none";
+    }
+    
+    function myFunction(){
+       
+        let banks = document.getElementById("banks").value;
+        let banknumber = document.getElementById("banknumber").value;
+        let amount = document.getElementById("amount").value;
+        let balance = '<%= wallet.balance %>';
+        balance = parseFloat(balance);
+        amount = parseFloat(amount);
+        console.log(typeof balance, typeof amount)
+       
+        if (!banks  ) {
+            alert("กรุณาเลือกธนาคาร");  
+           
+            
+        } else if(isNaN(banknumber) || !banknumber) {
+            alert("กรุณากรอกเลขที่บัญชีธนาคาร");  
+           
+        } else if(isNaN(amount) || amount > balance || !amount ) {
+             
+            if(amount > balance){
+            alert("จำนวนเงินไม่เพียงพอ");  
+            }else{
+                alert("กรุณากรอกจำนวนเงินให้ถูกต้อง");
+            }
+            
+            
+        } else{
+            walletFunction();
+        }
+           
+       
+    }
+    
+
+
+</script>
+
+</html>

@@ -1,0 +1,54 @@
+body {
+  background-image: url("/images/bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.loginPanel {
+  background-color: white;
+  width: 1000px;
+  height: 600px;
+  border-radius: 20px;
+  opacity: 0.8;
+  margin-left: 17%;
+  margin-top: 5.5%;
+  position: absolute;
+}
+
+.login {
+  margin-left: 17% !important;
+  margin-top: 5.5% !important;
+  width: 1000px;
+  height: 600px;
+  position: absolute;
+}
+
+#inputEmail3 {
+  width: 400px;
+}
+
+#inputPassword3 {
+  width: 400px;
+}
+
+.logobox {
+  background-color: #A84499;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  padding-top: 22%;
+}
+
+.glow {
+  color: #fff;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+  from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+
+  to {
+      text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}

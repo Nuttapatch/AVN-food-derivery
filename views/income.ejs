@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <script src="/propper/popper.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <title>
+        <%= title %>
+    </title>
+    <Style>
+        body {
+            background-color: #e3c6e6;
+        }
+
+        #income {
+            padding-left: 45px;
+        }
+
+        #detail {
+            padding-left: 35px;
+            padding-top: 5px;
+        }
+
+        #card {
+            margin-left: 40px;
+            margin-top: 20px;
+        }
+
+        #Order {
+            padding-top: 25px;
+        }
+
+        #name {
+            padding-left: 30px;
+            padding-top: 20px;
+        }
+
+        .pickDate {
+            border-radius: 30px;
+            padding: 1%;
+            border: #621685 2px solid;
+        }
+    </Style>
+
+</head>
+
+<body>
+    <% include navbarRestuarant %>
+        <div class="row" style="margin-top: 2%; margin-left: 5%; margin-right: 5%;">
+            <div class="col">
+                <h1 class="number">สรุปยอดขาย</h1>
+            </div>
+            <div class="col text-end" id="date">
+                <form action="/restuarants/searchDate" method="post">
+                    <input type="text" class="pickDate" name="date">
+                    <button type="submit" class="btn btn-default" data-dismiss="modal">ค้นหา</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row" style="margin-left: 3%; margin-top: 3%;">
+            <div class="col">
+                <div class="card mb-3" id="card" style="width: 350px; height: 160px;">
+                    <div class="row" id="Order">
+                        <div class="col" id="detail" style="width: 30px;">
+                            <h2>ยอดขาย</h2>
+                        </div>
+                    </div>
+                    <div class="row" id="name">
+                        <p style="font-size: 22px;">
+                            <%= totalres %> บาท
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card mb-3" id="card" style="width: 350px; height: 160px;">
+                    <div class="row" id="Order">
+                        <div class="col" id="detail" style="width: 30px;">
+                            <h2>ออเดอร์ที่สำเร็จ</h2>
+                        </div>
+                    </div>
+                    <div class="row" id="name">
+                        <p style="font-size: 22px;">
+                            <%= amountsuc %> ออเดอร์
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col text-start">
+                <div class="card mb-3" id="card" style="width: 350px; height: 160px;">
+                    <div class="row" id="Order">
+                        <div class="col" id="detail" style="width: 30px;">
+                            <h2>ออเดอร์ที่ถูกยกเลิก</h2>
+                        </div>
+                    </div>
+                    <div class="row" id="name">
+                        <p style="font-size: 22px;">
+                            <%= amountcan %> ออเดอร์
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(function () {
+                const date = new Date();
+                let current_date = date.getFullYear() + "-" + (date.getMonth() + 1);
+                if ('<%= date %>' != "") {
+                    current_date = '<%= date %>'
+                }
+                $('.pickDate').datetimepicker({
+                    viewMode: 'months',
+                    format: 'YYYY-MM'
+                });
+                $('.pickDate').val(current_date)
+            });
+
+        </script>
+
+</body>
+
+</html>

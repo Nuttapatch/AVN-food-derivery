@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <script src="/propper/popper.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>addmenu</title>
+    <style>
+        body {
+            background-color: #e3c6e6;
+            overflow-x: hidden;
+        }
+        .number {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1 class="number" >เพิ่มเมนูอาหาร</h1>
+   <div class="card mb-3" style="border-radius: 20px; margin-left: 2%; margin-right: 2%; margin-top: 2%;">
+    <div class="card-body row">
+        <div class="col-5">
+            <img src="/images/upload.png" class="card-img-top">
+        </div>
+        <div class="col-7" style="margin-top: 2%; padding-left: 5%;" > 
+            <label for="inputEmail3" class=" col-form-label"
+                style="font-size: 20px; font-weight:bold;">ชื่ออาหาร</label>
+            <input type="text" class="foodname mb-3" id="menuname" style="width: 450px;">
+            <br>
+            <label for="inputEmail3" class=" col-form-label"
+                style="font-size: 20px; font-weight:bold;">คำอธิบาย</label>
+            <input type="text" class="detailfoodname mb-3" id="detailmenuname" style="width: 450px;">
+            <br>
+            <label for="inputEmail3" class=" col-form-label"
+                style="font-size: 20px; font-weight:bold;">ราคา</label>
+            <input type="number" class="price mb-3" id="pricefood " style="width: 100px;">
+            <label for="inputEmail3" class=" col-form-label"
+                style="font-size: 20px; font-weight:bold;">จำนวน</label>
+            <input type="number" class="price mb-3" id="pricefood " style="width: 100px;">
+            <br>
+            <form action="/action_page.php">
+                <label for="food"  style="font-size: 20px; font-weight:bold;">ประเภท </label>
+                <select name="foods" id="foods">
+                  <option value="ประเภท">ประเภทอาหาร</option>
+                  <option value="อาหารไทย">อาหารไทย</option>
+                  <option value="อิตาเลี่ยน">อิตาเลี่ยน</option>
+                  <option value="ฝรั่งเศษ">ฝรั่งเศษ</option>
+                  <option value="อินเดีย">อินเดีย</option>
+                </select>
+            </form>
+            <br>
+           <button type="button" class="save"
+                style="background-color: green; color: white; border-radius: 2px;border: none; width: 100px; height: 40px; border-radius: 20px;">บันทึก</button>
+           
+        </div>
+    </div>
+</div>
+    </div>
+
+</body>
+</html>

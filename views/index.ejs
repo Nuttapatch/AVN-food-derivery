@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/loginStyle.css' />
+    <link rel="stylesheet" href="./css/bootstrap.min.css"/>
+    <script src="./propper/popper.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="loginPanel">
+    </div>
+    <div class="login row">
+        <div class="col-6" style="margin-top: 18%; padding-right: 5%;">
+            <form action="/" method="post">
+                <div class="row mb-1 Email" style="margin-left: 5%;">
+                    <label for="username" class="col-2 col-form-label" style="font-size: 20px; font-weight:bold;">Username</label>
+                </div>
+                <div class="row mb-4" style="margin-left: 5%; ">
+                    <input type="text" class="form-control" id="username" name="username" style="border-radius: 30px;">
+                </div>
+                <div class="row mb-1 password" style="margin-left: 5%;">
+                    <label for="password" class="col-2 col-form-label" style="font-size: 20px; font-weight:bold;">Password</label>
+                </div>
+                <div class="row mb-5" style="margin-left: 5%; ">
+                    <input type="password" class="form-control" id="password" name="password" style="border-radius: 30px;">
+                </div>
+                <div class="row justify-content-center">
+                    <button type="submit" class="col btn btn-primary" style="margin-left: 8%; margin-right: 2%; background-color: #A84499; border-radius: 30px;" id="loginButt">Login</button>
+                </div>
+            </form>
+            <div class="text-center">
+                <p style="color: red; margin-top: 2%;"><%= errorMessage %></p>
+            </div>
+        </div>
+        <div class="col-6 logobox text-center">
+            <h1 class="glow" style="font-size: 70px;">AVN</h1>
+            <h1 class="glow" style="font-size: 50px;">Food Delivery</h1>
+        </div>
+    </div>
+  </body>
+</html>

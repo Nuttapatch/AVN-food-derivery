@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <script src="/propper/popper.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>
+        <%= title %>
+    </title>
+    <style>
+        body {
+            background-color: #e3c6e6;
+        }
+
+        #rider {
+            padding-left: 45px;
+        }
+
+        #person {
+            padding-left: 45px;
+        }
+
+        #detail {
+            padding-left: 45px;
+            padding-top: 5px;
+        }
+
+        #card {
+            margin-left: 40px;
+        }
+
+        #Order {
+            padding-top: 25px;
+        }
+
+        #name {
+            padding-left: 30px;
+            padding-top: 20px;
+        }
+
+        #orders {
+            padding-left: 30px;
+            padding-top: 20px;
+            font-size: 20px;
+            border: #e3c6e6 2px solid;
+            margin: 3% 2%;
+            border-radius: 10px;
+        }
+
+        .number {
+            padding-left: 3%;
+            margin-top: 2%;
+        }
+
+        .but {
+            background-color: #621685;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            font-size: 20px;
+            padding: 8px 2%;
+            margin-bottom: 50px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <% include navbarRestuarant %>
+        <div class="container-fluid">
+            <h1 class="number">Order ID: <%= OrderT.id %></h1>
+            <div class="row">
+                <div class="col">
+                    <div class="card mb-3" id="card" style="width: 350px; height: 200px; margin-left: 55%;">
+                        <div class="row" id="Order">
+                            <div class="col-1" id="rider">
+                                <img src="/images/iconrider.jpg" style="width: 50px;height: 50px;">
+                            </div>
+                            <div class="col" id="detail" style="width: 30px;">
+                                <h4>ข้อมูลของไรเดอร์</h4>
+                            </div>
+                        </div>
+                        <% if(RiderShow.length != 0){ %>
+                        <div class="row" id="name">
+                            <p>ชื่อไรเดอร์: <%= RiderShow.name %> <%= RiderShow.surname %></p>
+                            <p>เบอร์โทร: <%= RiderShow.phoneNum %></p>
+                        </div>
+                        <% }else{ %>
+                            <div class="row" id="name">
+                                <p style="color: gray;">ยังไม่มีไรเดอร์รับออเดอร์</p>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="col text-start">
+                    <div class="card mb-3" id="card" style="width: 350px; height: 200px;">
+                        <div class="row" id="Order">
+                            <div class="col-1" id="person" >
+                                <img src="/images/iconperson.png" style="width: 50px;height: 50px;">
+                            </div>
+                            <div class="col" id="detail" style="width: 30px;">
+                                <h4>ข้อมูลผู้สั่ง</h4>
+                            </div>
+                        </div>
+                        <div class="row" id="name">
+                            <p>ชื่อผู้สั่ง: <%= UserN.username %></p>
+                            <p>เบอร์โทร: <%= UserN.phoneNum %></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3" id="card" style="width: 1000px; margin-left: 18%;">
+                <div class="card-header" id="Order">
+                    <h3>รายการอาหารที่สั่ง</h3>
+                </div>
+                <div class="card-body" id="orders">
+                    <% for(let i=0; i<CartDTShow.length; i++) { %>
+                    <div class="row">
+                        <div class="col-2">
+                            <img class="w-75" src="<%= menuShow[i].image %>">
+                        </div>
+                        <div class="col-8">
+                            <p><%= menuShow[i].name %></p>
+                        </div>
+                        <div class="col-2">
+                            <p>x<%= CartDTShow[i].amount %></p>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+                <div class="text-end" style="padding-right: 2%; margin-bottom: 2%;">
+                    <h5>รวมทั้งหมด <%= Total %> บาท</h5>
+                </div>
+            </div>
+            <% if(OrderT.status == 1){ %>
+            <div class="row mt-4">
+                <div class="col text-end">
+                    <form method="post" id="formSubmit" action="/restuarants/updateStatus/<%= OrderT.id %>/2">
+                        <button type="submit" class="pass"
+                            style="color: white; background-color: green; border-radius: 10px; border: none; width: 170px; height: 40px;">เตรียมอาหารเสร็จสิ้น</button>
+                    </form>
+                </div>
+                <div class="col text-start">
+                    <form method="post" id="formSubmit2" action="/restuarants/updateStatus/<%= OrderT.id %>/4">
+                        <button type="submit" class="nopass"
+                            style="color: white; background-color: red; border-radius: 10px; border: none; width: 170px; height: 40px;">ยกเลิกออเดอร์</button>
+                    </form>
+                </div>
+            </div>
+            <% }else if(OrderT.status == 0){ %>
+                <div class="row mt-4 text-center">
+                    <h2 style="color: gray;">อยู่ระหว่างการรอไรเดอร์รับออเดอร์</h2>
+                </div>
+            <% }else if(OrderT.status == 2){ %>
+                <div class="row mt-4 text-center">
+                    <h2 style="color: gray;">อยู่ระหว่างการรอไรเดอร์ไปส่งออเดอร์ให้กับลูกค้า</h2>
+                </div>
+            <% }else if(OrderT.status == 4){ %>
+                <div class="row mt-4 text-center">
+                    <h2 style="color: red;">ออเดอร์ถูกยกเลิก</h2>
+                </div>
+            <% }else if(OrderT.status == 3){ %>
+                <div class="row mt-4 text-center">
+                    <h2 style="color: green;">ออเดอร์สำเร็จ</h2>
+                </div>
+            <% } %>
+        </div>
+</body>
+
+</html>
